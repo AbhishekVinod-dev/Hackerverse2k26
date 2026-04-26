@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>HACKERVERSE // CODEKRAFTERS</title>
+    <meta name="description"
+        content="HACKERVERSE — The ultimate hackathon by CodeKrafters. 48hrs of building, $40K prizes, 3 tracks." />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&family=Inter:wght@400;500;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script id="tailwind-config">
+        tailwind.config = { darkMode: "class", theme: { extend: { colors: { outline: "#8e9379", "on-secondary-fixed": "#1c1b1b", "tertiary-fixed-dim": "#c8c6c6", "secondary-fixed-dim": "#c8c6c5", "on-error-container": "#ffdad6", "surface-tint": "#abd600", "primary-fixed-dim": "#abd600", "secondary-fixed": "#e5e2e1", background: "#0A0A0A", "secondary-container": "#474746", "on-error": "#690005", "surface-container-lowest": "#0e0e0e", "on-primary": "#283500", "surface-container-low": "#1c1b1b", secondary: "#c8c6c5", "on-tertiary-fixed-variant": "#474747", "on-secondary-fixed-variant": "#474746", "on-primary-fixed-variant": "#3c4d00", "surface-container": "#201f1f", "inverse-on-surface": "#313030", "on-background": "#e5e2e1", "error-container": "#93000a", "on-tertiary": "#303030", "surface-container-high": "#2a2a2a", tertiary: "#ffffff", surface: "#131313", "surface-bright": "#3a3939", primary: "#ffffff", "primary-fixed": "#c3f400", error: "#ffb4ab", "tertiary-fixed": "#e4e2e1", "on-surface": "#e5e2e1", "outline-variant": "#444933", "on-tertiary-fixed": "#1b1c1c", "surface-dim": "#131313", "tertiary-container": "#e4e2e1", "on-tertiary-container": "#656464", "on-primary-container": "#556d00", "on-secondary": "#313030", "on-primary-fixed": "#161e00", "primary-container": "#c3f400", "inverse-surface": "#e5e2e1", "on-secondary-container": "#b7b5b4", "surface-variant": "#353534", "surface-container-highest": "#353534", "on-surface-variant": "#c4c9ac", "inverse-primary": "#506600", "neon-green": "#CCFF00" }, borderRadius: { DEFAULT: "0px", lg: "0px", xl: "0px", full: "9999px" }, spacing: { grid_columns: "12", margin: "48px", gutter: "24px", base: "8px" }, fontFamily: { "body-lg": ["Inter"], "label-mono": ["Space Grotesk"], "body-md": ["Inter"], "headline-md": ["Space Grotesk"], "display-xl": ["Space Grotesk"], "headline-lg": ["Space Grotesk"] }, fontSize: { "body-lg": ["18px", { lineHeight: "160%", fontWeight: "400" }], "label-mono": ["14px", { lineHeight: "100%", letterSpacing: "0.1em", fontWeight: "500" }], "body-md": ["16px", { lineHeight: "160%", fontWeight: "400" }], "headline-md": ["32px", { lineHeight: "120%", fontWeight: "600" }], "display-xl": ["96px", { lineHeight: "100%", letterSpacing: "-0.04em", fontWeight: "700" }], "headline-lg": ["64px", { lineHeight: "110%", letterSpacing: "-0.02em", fontWeight: "700" }] } } } }
+    </script>
+</head>
+
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+    <!-- Canvases -->
+    <canvas id="matrix-canvas"></canvas>
+    <canvas id="particle-canvas" style="position:fixed;inset:0;z-index:1;pointer-events:none;"></canvas>
+
+    <!-- Mobile Menu Backdrop -->
+    <div id="menu-backdrop" class="menu-backdrop fixed inset-0 bg-black/70 backdrop-blur-sm z-[998]"></div>
+    <!-- Mobile Menu Drawer -->
+    <div id="mobile-menu"
+        class="mobile-menu fixed top-0 right-0 w-72 h-full bg-[#0A0A0A] border-l-2 border-neon-green z-[999] flex flex-col p-8 gap-6">
+        <button id="menu-close" class="self-end text-neon-green"><span
+                class="material-symbols-outlined text-3xl">close</span></button>
+        <a href="#about"
+            class="font-['Space_Grotesk'] tracking-tighter uppercase font-bold text-neon-green text-xl py-2 border-b border-neon-green/20">About</a>
+        <a href="#tracks"
+            class="font-['Space_Grotesk'] tracking-tighter uppercase font-bold text-neon-green text-xl py-2 border-b border-neon-green/20">Tracks</a>
+        <a href="#timeline"
+            class="font-['Space_Grotesk'] tracking-tighter uppercase font-bold text-neon-green text-xl py-2 border-b border-neon-green/20">Timeline</a>
+        <a href="#prizes"
+            class="font-['Space_Grotesk'] tracking-tighter uppercase font-bold text-neon-green text-xl py-2 border-b border-neon-green/20">Prizes</a>
+        <a href="#team"
+            class="font-['Space_Grotesk'] tracking-tighter uppercase font-bold text-neon-green text-xl py-2 border-b border-neon-green/20">Team</a>
+        <a href="#sponsors"
+            class="font-['Space_Grotesk'] tracking-tighter uppercase font-bold text-neon-green text-xl py-2 border-b border-neon-green/20">Sponsors</a>
+        <a href="#faq"
+            class="font-['Space_Grotesk'] tracking-tighter uppercase font-bold text-neon-green text-xl py-2 border-b border-neon-green/20">FAQ</a>
+        <button class="bg-neon-green text-black px-6 py-3 font-['Space_Grotesk'] font-bold mt-4 uppercase">Register
+            Now</button>
+    </div>
+
+    <!-- Header -->
+    <header
+        class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-20 bg-[#0A0A0A]/90 backdrop-blur-md border-b-2 border-neon-green shadow-[0_0_10px_rgba(204,255,0,0.3)]">
+        <a href="#"
+            class="text-2xl font-black text-neon-green tracking-widest italic font-['Space_Grotesk']">HACKERVERSE</a>
+        <nav class="hidden lg:flex gap-6 items-center">
+            <a class="nav-link font-['Space_Grotesk'] tracking-tighter uppercase font-bold text-neon-green text-sm px-3 py-1 hover:bg-neon-green hover:text-[#0A0A0A] transition-all duration-75"
+                href="#about">About</a>
+            <a class="nav-link font-['Space_Grotesk'] tracking-tighter uppercase font-bold text-neon-green text-sm px-3 py-1 hover:bg-neon-green hover:text-[#0A0A0A] transition-all duration-75"
+                href="#tracks">Tracks</a>
+            <a class="nav-link font-['Space_Grotesk'] tracking-tighter uppercase font-bold text-neon-green text-sm px-3 py-1 hover:bg-neon-green hover:text-[#0A0A0A] transition-all duration-75"
+                href="#timeline">Timeline</a>
+            <a class="nav-link font-['Space_Grotesk'] tracking-tighter uppercase font-bold text-neon-green text-sm px-3 py-1 hover:bg-neon-green hover:text-[#0A0A0A] transition-all duration-75"
+                href="#prizes">Prizes</a>
+            <a class="nav-link font-['Space_Grotesk'] tracking-tighter uppercase font-bold text-neon-green text-sm px-3 py-1 hover:bg-neon-green hover:text-[#0A0A0A] transition-all duration-75"
+                href="#team">Team</a>
+            <a class="nav-link font-['Space_Grotesk'] tracking-tighter uppercase font-bold text-neon-green text-sm px-3 py-1 hover:bg-neon-green hover:text-[#0A0A0A] transition-all duration-75"
+                href="#sponsors">Sponsors</a>
+            <a class="nav-link font-['Space_Grotesk'] tracking-tighter uppercase font-bold text-neon-green text-sm px-3 py-1 hover:bg-neon-green hover:text-[#0A0A0A] transition-all duration-75"
+                href="#faq">FAQ</a>
+        </nav>
+        <div class="flex items-center gap-4">
+            <button
+                class="hidden md:block bg-neon-green text-[#0A0A0A] px-6 py-2 font-['Space_Grotesk'] font-bold tracking-tighter uppercase hover:bg-white transition-all active:translate-y-1">REGISTER_NOW</button>
+            <button id="menu-toggle" class="lg:hidden text-neon-green"><span
+                    class="material-symbols-outlined text-3xl">menu</span></button>
+        </div>
+    </header>
+
+    <main class="relative z-10 pt-20">
+
+        <!-- HERO -->
+        <section class="min-h-screen flex flex-col items-center justify-center text-center px-4 relative" id="hero">
+            <div class="absolute left-10 top-1/2 -translate-y-1/2 hidden xl:block">
+                <span
+                    class="vertical-text text-neon-green font-['Space_Grotesk'] text-sm tracking-[0.5em] opacity-50 uppercase">TERMINAL_ESTABLISHED_2026</span>
+            </div>
+            <div class="max-w-6xl mx-auto hero-float">
+                <div class="inline-block pulse-live bg-neon-green/10 border border-neon-green px-4 py-1 mb-6">
+                    <span class="font-label-mono text-neon-green text-xs flex items-center gap-2"><span
+                            class="w-2 h-2 bg-neon-green rounded-full inline-block"></span> REGISTRATION LIVE</span>
+                </div>
+                <p class="font-label-mono text-neon-green mb-4 flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-sm">terminal</span> ORGANIZED BY CODEKRAFTERS
+                </p>
+                <h1 class="font-display-xl text-primary leading-tight mb-8">
+                    <span class="glitch-title" data-text="HACKER">HACKER</span><span
+                        class="text-neon-green glitch-title glow-text" data-text="VERSE">VERSE</span>
+                </h1>
+                <p class="font-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10">48 hours of non-stop innovation.
+                    Build the future of AI, Web3, and Cybersecurity with 500+ hackers from around the globe.</p>
+                <!-- Countdown -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-xl mx-auto">
+                    <div class="border-2 border-neon-green p-6 bg-surface/50 backdrop-blur-sm">
+                        <span id="cd-days"
+                            class="block font-display-xl text-neon-green text-5xl countdown-digit">00</span>
+                        <span class="font-label-mono text-xs text-on-surface-variant">DAYS</span>
+                    </div>
+                    <div class="border-2 border-neon-green p-6 bg-surface/50 backdrop-blur-sm">
+                        <span id="cd-hours"
+                            class="block font-display-xl text-neon-green text-5xl countdown-digit">00</span>
+                        <span class="font-label-mono text-xs text-on-surface-variant">HOURS</span>
+                    </div>
+                    <div class="border-2 border-neon-green p-6 bg-surface/50 backdrop-blur-sm">
+                        <span id="cd-mins"
+                            class="block font-display-xl text-neon-green text-5xl countdown-digit">00</span>
+                        <span class="font-label-mono text-xs text-on-surface-variant">MINS</span>
+                    </div>
+                    <div class="border-2 border-neon-green p-6 bg-surface/50 backdrop-blur-sm">
+                        <span id="cd-secs"
+                            class="block font-display-xl text-neon-green text-5xl countdown-digit">00</span>
+                        <span class="font-label-mono text-xs text-on-surface-variant">SECS</span>
+                    </div>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                    <button
+                        class="bg-neon-green text-black px-10 py-4 font-['Space_Grotesk'] font-black text-xl hover:shadow-[0_0_20px_#CCFF00] transition-all">INITIALIZE_JOIN</button>
+                    <button
+                        class="border-2 border-neon-green text-neon-green px-10 py-4 font-['Space_Grotesk'] font-black text-xl hover:bg-neon-green/10 transition-all">VIEW_DOCS</button>
+                </div>
+            </div>
+            <div class="absolute right-10 top-1/2 -translate-y-1/2 hidden xl:block">
+                <span
+                    class="vertical-text text-neon-green font-['Space_Grotesk'] text-sm tracking-[0.5em] opacity-50 uppercase">STATUS:SYSTEM_READY</span>
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section class="py-24 px-6 border-y-2 border-neon-green/30 bg-surface-container-lowest/80" id="about">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="font-headline-lg text-primary uppercase mb-6 reveal">ABOUT_HACKERVERSE</h2>
+                <div class="grid md:grid-cols-2 gap-12 items-start">
+                    <div class="reveal stagger-1">
+                        <p class="font-body-lg text-on-surface-variant mb-6">HACKERVERSE is a 48-hour online hackathon
+                            organized by CodeKrafters where developers, designers, and innovators come together to build
+                            groundbreaking solutions across AI, Web3, and Cybersecurity.</p>
+                        <p class="font-body-md text-on-surface-variant mb-8">Whether you're a seasoned hacker or a
+                            first-time participant, HACKERVERSE provides mentorship, workshops, and a global community
+                            to help you ship something extraordinary.</p>
+                        <div
+                            class="border border-neon-green/30 p-4 bg-black/50 font-['Space_Grotesk'] text-sm text-neon-green">
+                            <p class="opacity-50 mb-1">$ whois hackerverse</p>
+                            <p>> Global virtual hackathon</p>
+                            <p>> 48 hours of building</p>
+                            <p>> Open to all skill levels</p>
+                            <p>> $40,000 in prizes<span class="typing-cursor"></span></p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 reveal stagger-2">
+                        <div class="border-2 border-neon-green/40 p-6 text-center card-glow">
+                            <span class="block font-display-xl text-neon-green text-4xl stat-number" data-count="500"
+                                data-suffix="+">0</span>
+                            <span class="font-label-mono text-xs text-on-surface-variant">HACKERS</span>
+                        </div>
+                        <div class="border-2 border-neon-green/40 p-6 text-center card-glow">
+                            <span class="block font-display-xl text-neon-green text-4xl stat-number" data-count="48"
+                                data-suffix="h">0</span>
+                            <span class="font-label-mono text-xs text-on-surface-variant">DURATION</span>
+                        </div>
+                        <div class="border-2 border-neon-green/40 p-6 text-center card-glow">
+                            <span class="block font-display-xl text-neon-green text-4xl stat-number" data-count="40"
+                                data-suffix="K">0</span>
+                            <span class="font-label-mono text-xs text-on-surface-variant">PRIZE POOL</span>
+                        </div>
+                        <div class="border-2 border-neon-green/40 p-6 text-center card-glow">
+                            <span class="block font-display-xl text-neon-green text-4xl stat-number" data-count="20"
+                                data-suffix="+">0</span>
+                            <span class="font-label-mono text-xs text-on-surface-variant">MENTORS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TRACKS -->
+        <section class="py-24 px-6 bg-background" id="tracks">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex items-center justify-between mb-16">
+                    <h2 class="font-headline-lg text-primary uppercase reveal">MISSION_TRACKS</h2>
+                    <span class="font-label-mono text-neon-green hidden md:block reveal stagger-1">03 ACTIVE
+                        NODES</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div
+                        class="group border-2 border-on-surface-variant hover:border-neon-green p-8 transition-all relative overflow-hidden scanline-overlay card-glow reveal stagger-1">
+                        <div
+                            class="absolute top-0 right-0 p-2 bg-on-surface-variant text-black font-label-mono text-[10px] group-hover:bg-neon-green transition-colors">
+                            LIVE</div>
+                        <span class="material-symbols-outlined text-neon-green text-5xl mb-6">psychology</span>
+                        <h3 class="font-headline-md text-primary mb-4">AI_SENTIENCE</h3>
+                        <p class="font-body-md text-on-surface-variant mb-6">Bridge the gap between silicon and
+                            consciousness. Develop autonomous agents and neural models.</p>
+                        <ul class="font-label-mono text-xs text-neon-green space-y-2">
+                            <li>&gt; LLM ARCHITECTURES</li>
+                            <li>&gt; NEURAL INTERFACES</li>
+                            <li>&gt; AGENTIC WORKFLOWS</li>
+                        </ul>
+                    </div>
+                    <div
+                        class="group border-2 border-on-surface-variant hover:border-neon-green p-8 transition-all relative overflow-hidden scanline-overlay card-glow reveal stagger-2">
+                        <div
+                            class="absolute top-0 right-0 p-2 bg-on-surface-variant text-black font-label-mono text-[10px] group-hover:bg-neon-green transition-colors">
+                            LIVE</div>
+                        <span class="material-symbols-outlined text-neon-green text-5xl mb-6">database</span>
+                        <h3 class="font-headline-md text-primary mb-4">WEB3_GENESIS</h3>
+                        <p class="font-body-md text-on-surface-variant mb-6">Decentralize the infrastructure of
+                            tomorrow. Build trustless protocols and verifiable systems.</p>
+                        <ul class="font-label-mono text-xs text-neon-green space-y-2">
+                            <li>&gt; ZERO-KNOWLEDGE PROOFS</li>
+                            <li>&gt; SMART CONTRACT OPT</li>
+                            <li>&gt; DAOs &amp; GOVERNANCE</li>
+                        </ul>
+                    </div>
+                    <div
+                        class="group border-2 border-on-surface-variant hover:border-neon-green p-8 transition-all relative overflow-hidden scanline-overlay card-glow reveal stagger-3">
+                        <div
+                            class="absolute top-0 right-0 p-2 bg-on-surface-variant text-black font-label-mono text-[10px] group-hover:bg-neon-green transition-colors">
+                            LIVE</div>
+                        <span class="material-symbols-outlined text-neon-green text-5xl mb-6">shield_lock</span>
+                        <h3 class="font-headline-md text-primary mb-4">CYBER_ARMOR</h3>
+                        <p class="font-body-md text-on-surface-variant mb-6">Harden the digital perimeter. Design novel
+                            encryption methods and defensive cyber architectures.</p>
+                        <ul class="font-label-mono text-xs text-neon-green space-y-2">
+                            <li>&gt; QUANTUM RESISTANCE</li>
+                            <li>&gt; THREAT DETECTION AI</li>
+                            <li>&gt; SECURE ENCLAVES</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TIMELINE -->
+        <section
+            class="py-24 px-6 bg-surface-container-lowest/80 border-y-2 border-neon-green/30 relative overflow-hidden"
+            id="timeline">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="font-headline-lg text-primary text-center mb-24 uppercase reveal">DEPLOYMENT_TIMELINE</h2>
+                <div class="relative">
+                    <div class="timeline-progress">
+                        <div id="timeline-fill" class="timeline-progress-fill" style="height:0%"></div>
+                    </div>
+                    <div class="space-y-24">
+                        <div class="relative flex items-center md:odd:flex-row-reverse group">
+                            <div class="hidden md:block w-1/2"></div>
+                            <div
+                                class="absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-background border-2 border-neon-green glow-border rounded-full z-10 group-hover:scale-150 transition-transform">
+                            </div>
+                            <div class="w-full md:w-1/2 md:px-12 reveal-left">
+                                <div class="font-label-mono text-neon-green text-sm mb-2">MAY 15 — JUN 01</div>
+                                <h4 class="font-headline-md text-primary text-2xl mb-2">RECRUITMENT_PHASE</h4>
+                                <p class="font-body-md text-on-surface-variant">Registration open for all units. Form
+                                    squads or enter as a lone operator.</p>
+                            </div>
+                        </div>
+                        <div class="relative flex items-center md:odd:flex-row-reverse group">
+                            <div class="hidden md:block w-1/2"></div>
+                            <div
+                                class="absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-background border-2 border-neon-green glow-border rounded-full z-10 group-hover:scale-150 transition-transform">
+                            </div>
+                            <div class="w-full md:w-1/2 md:px-12 reveal-right">
+                                <div class="font-label-mono text-neon-green text-sm mb-2">JUN 05</div>
+                                <h4 class="font-headline-md text-primary text-2xl mb-2">KICKOFF_BROADCAST</h4>
+                                <p class="font-body-md text-on-surface-variant">Opening ceremony, team matching, and
+                                    workshops. All channels go live.</p>
+                            </div>
+                        </div>
+                        <div class="relative flex items-center md:odd:flex-row-reverse group">
+                            <div class="hidden md:block w-1/2"></div>
+                            <div
+                                class="absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-background border-2 border-neon-green glow-border rounded-full z-10 group-hover:scale-150 transition-transform">
+                            </div>
+                            <div class="w-full md:w-1/2 md:px-12 reveal-left">
+                                <div class="font-label-mono text-neon-green text-sm mb-2">JUN 15 — JUN 17</div>
+                                <h4 class="font-headline-md text-primary text-2xl mb-2">HACK_MARATHON</h4>
+                                <p class="font-body-md text-on-surface-variant">48 hours of uninterrupted creation.
+                                    Coffee protocols active. Terminal access granted.</p>
+                            </div>
+                        </div>
+                        <div class="relative flex items-center md:odd:flex-row-reverse group">
+                            <div class="hidden md:block w-1/2"></div>
+                            <div
+                                class="absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-background border-2 border-neon-green glow-border rounded-full z-10 group-hover:scale-150 transition-transform">
+                            </div>
+                            <div class="w-full md:w-1/2 md:px-12 reveal-right">
+                                <div class="font-label-mono text-neon-green text-sm mb-2">JUN 20</div>
+                                <h4 class="font-headline-md text-primary text-2xl mb-2">FINAL_UPLINK</h4>
+                                <p class="font-body-md text-on-surface-variant">Submissions close. All repos synced.
+                                    Judges review and deliberate.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRIZES -->
+        <section class="py-24 px-6 border-t-2 border-neon-green bg-surface-container-high" id="prizes">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="font-headline-lg text-primary uppercase reveal">PRIZE_POOL_ALLOCATION</h2>
+                    <p class="font-label-mono text-neon-green mt-4 reveal stagger-1">TOTAL LIQUIDITY: $40,000 USD</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div
+                        class="order-2 md:order-1 border-2 border-on-surface-variant p-8 bg-background flex flex-col items-center text-center reveal-scale stagger-1">
+                        <div class="w-16 h-16 border-2 border-on-surface-variant flex items-center justify-center mb-6">
+                            <span
+                                class="material-symbols-outlined text-on-surface-variant text-3xl">military_tech</span>
+                        </div>
+                        <h4 class="font-label-mono text-on-surface-variant mb-2">02_SILVER_NODE</h4>
+                        <div class="font-display-xl text-primary text-6xl mb-6">$10K</div>
+                        <ul class="font-label-mono text-xs text-on-surface-variant space-y-3 text-left w-full">
+                            <li class="flex items-center gap-2"><span
+                                    class="material-symbols-outlined text-[14px]">check_circle</span> GPU CLOUD CREDITS
+                            </li>
+                            <li class="flex items-center gap-2"><span
+                                    class="material-symbols-outlined text-[14px]">check_circle</span> HARDWARE ACCESS
+                            </li>
+                            <li class="flex items-center gap-2"><span
+                                    class="material-symbols-outlined text-[14px]">check_circle</span> JOB REFERRALS</li>
+                        </ul>
+                    </div>
+                    <div
+                        class="order-1 md:order-2 border-2 border-neon-green p-10 bg-background flex flex-col items-center text-center transform md:scale-110 glow-border z-10 relative reveal-scale">
+                        <div
+                            class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-neon-green text-black px-4 py-1 font-label-mono text-xs font-bold pulse-live">
+                            LEGENDARY</div>
+                        <div class="w-20 h-20 border-2 border-neon-green flex items-center justify-center mb-6"><span
+                                class="material-symbols-outlined text-neon-green text-5xl"
+                                style="font-variation-settings:'FILL' 1;">workspace_premium</span></div>
+                        <h4 class="font-label-mono text-neon-green mb-2">01_GOLD_PRIME</h4>
+                        <div class="font-display-xl text-neon-green text-7xl mb-6 glow-text">$25K</div>
+                        <ul class="font-label-mono text-xs text-neon-green space-y-3 text-left w-full">
+                            <li class="flex items-center gap-2"><span
+                                    class="material-symbols-outlined text-[14px]">bolt</span> VENTURE FUNDING INTRO</li>
+                            <li class="flex items-center gap-2"><span
+                                    class="material-symbols-outlined text-[14px]">bolt</span> EXCLUSIVE MENTORSHIP</li>
+                            <li class="flex items-center gap-2"><span
+                                    class="material-symbols-outlined text-[14px]">bolt</span> GLOBAL ECOSYSTEM GRANT
+                            </li>
+                        </ul>
+                    </div>
+                    <div
+                        class="order-3 border-2 border-on-surface-variant p-8 bg-background flex flex-col items-center text-center reveal-scale stagger-2">
+                        <div class="w-16 h-16 border-2 border-on-surface-variant flex items-center justify-center mb-6">
+                            <span class="material-symbols-outlined text-on-surface-variant text-3xl">emoji_events</span>
+                        </div>
+                        <h4 class="font-label-mono text-on-surface-variant mb-2">03_BRONZE_CORE</h4>
+                        <div class="font-display-xl text-primary text-6xl mb-6">$5K</div>
+                        <ul class="font-label-mono text-xs text-on-surface-variant space-y-3 text-left w-full">
+                            <li class="flex items-center gap-2"><span
+                                    class="material-symbols-outlined text-[14px]">check_circle</span> COMMEMORATIVE NFT
+                            </li>
+                            <li class="flex items-center gap-2"><span
+                                    class="material-symbols-outlined text-[14px]">check_circle</span> SWAG OVERLOAD</li>
+                            <li class="flex items-center gap-2"><span
+                                    class="material-symbols-outlined text-[14px]">check_circle</span> COMMUNITY BADGE
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TEAM -->
+        <section class="py-24 px-6 bg-background" id="team">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="font-headline-lg text-primary mb-16 uppercase reveal">COMMAND_SQUAD</h2>
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div
+                        class="border border-on-surface-variant/30 grayscale hover:grayscale-0 transition-all group card-glow reveal stagger-1">
+                        <img class="w-full h-64 object-cover" alt="Tech lead"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmmiODuMGtrskI15tPMC2YQFzhzrkvupdL2r2MCR3uIUfTwLOHFID-uKzYQe3Mu8lBl5OqUTykCJwfam_Fhg_hvMVnknctbLzfsPcuXGooAX6lY86djbQWIcWkkJD4ZGMZJtjhTnx0IMYrzdTuCVvXY0yTt9lXCSY4x2WSAQ57dpg_HImWz5Tbza9o-yZkI7jZlt4JQJPlUzSsNUor2aRxMa9Cnv8gIZytRnO1kOG73xqF5cIRMcoih2si26a59LLPgX_TCwwP-MmZ" />
+                        <div class="p-4 bg-surface">
+                            <p class="font-label-mono text-neon-green text-[10px] mb-1">LEAD_ARCHITECT</p>
+                            <h5 class="font-headline-md text-lg text-primary uppercase">ALEX_RIVERA</h5>
+                            <div class="flex gap-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <span
+                                    class="material-symbols-outlined text-neon-green text-sm cursor-pointer">code</span>
+                                <span
+                                    class="material-symbols-outlined text-neon-green text-sm cursor-pointer">link</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="border border-on-surface-variant/30 grayscale hover:grayscale-0 transition-all group card-glow reveal stagger-2">
+                        <img class="w-full h-64 object-cover" alt="Strategist"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3PsUrUDORy1wa7OSPsIeqLqT8QBjvOdxKhvJnsNhlJa8r-8Turifbzp1YXJOBsngqiUzVtGAM3RCyBqY1qH9Ht27WJmXnUdzdKLHO2MpmsTP1pcKOjn1tJvaDSKIBxM6k1oukGsur1Qg_-S3pkKr-UQycfqR7WzLm-VMAJwlJJ3rtqVxYu-6HPZr7K1ggXA1SOWCu8Y0gEGKXWC_Mg8kGO3jGvUUIUJNe2kcZhBZXgF-Uw5pH3wjk7wTVJgjIVJVsEleRZDLQcGHF" />
+                        <div class="p-4 bg-surface">
+                            <p class="font-label-mono text-neon-green text-[10px] mb-1">PROTO_STRATEGIST</p>
+                            <h5 class="font-headline-md text-lg text-primary uppercase">SARAH_CHEN</h5>
+                            <div class="flex gap-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <span
+                                    class="material-symbols-outlined text-neon-green text-sm cursor-pointer">code</span>
+                                <span
+                                    class="material-symbols-outlined text-neon-green text-sm cursor-pointer">link</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="border border-on-surface-variant/30 grayscale hover:grayscale-0 transition-all group card-glow reveal stagger-3">
+                        <img class="w-full h-64 object-cover" alt="Security officer"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1rIXazfxymwkjUapIzWHl0lm_2iQ7vPAFXUPMg1HYmHoBMF3Z6JPxdetjr_3vss5gguxdgiDy2MT4rnONGLfHRnYnSgXocOvBpGesZVK28AyctIF5f0lE02Vd4LD3tLvxdcW5MFQYNsuHm2SGIhDVSPcYEoDRojXt2lVPp40oSzq5ZCiMjPwlUZIecCx3BqLe4NvrjdRtFFfbv5cOzC1PLDXISn4lo0S-VFsGRgvmvasJ06s1JbUwMO772sUWQJLSnFC1P08Bj3gR" />
+                        <div class="p-4 bg-surface">
+                            <p class="font-label-mono text-neon-green text-[10px] mb-1">SECURITY_OFFICER</p>
+                            <h5 class="font-headline-md text-lg text-primary uppercase">MARCUS_VAUGHN</h5>
+                            <div class="flex gap-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <span
+                                    class="material-symbols-outlined text-neon-green text-sm cursor-pointer">code</span>
+                                <span
+                                    class="material-symbols-outlined text-neon-green text-sm cursor-pointer">link</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="border border-on-surface-variant/30 grayscale hover:grayscale-0 transition-all group card-glow reveal stagger-4">
+                        <img class="w-full h-64 object-cover" alt="Data harvester"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrZZX1IjXJzJ2LZjbUFqkNHYdMlU4bVDokSV4Y-pDA1YCRVAmLQOlivSxbNqo8CI-8fa1HIdjg5RsQRxJm-WLtnjObyAkG33uyBBAFAKvs4je8UypzzNxf98hR-42hBW9UVy06hHCSj87I675mRE66JAcbzSZfqDIhZ6gimKpXqe7LCXLoBzNxorB8JEkVjq-RBWKvqOa-Q1IfC_4wC12Xm9R9GBYvX4lZUPGeZvmAPdIZQXST0j6NB2P0LSllVmcadKdLyIWO1Mkz" />
+                        <div class="p-4 bg-surface">
+                            <p class="font-label-mono text-neon-green text-[10px] mb-1">DATA_HARVESTER</p>
+                            <h5 class="font-headline-md text-lg text-primary uppercase">ELENA_KOSTAS</h5>
+                            <div class="flex gap-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <span
+                                    class="material-symbols-outlined text-neon-green text-sm cursor-pointer">code</span>
+                                <span
+                                    class="material-symbols-outlined text-neon-green text-sm cursor-pointer">link</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ORGANIZERS -->
+        <section class="py-24 px-6 border-y-2 border-neon-green/30 bg-surface-container-lowest/80" id="organizers">
+            <div class="max-w-5xl mx-auto">
+                <h2 class="font-headline-lg text-primary uppercase mb-12 reveal">ORGANIZED_BY</h2>
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="reveal stagger-1">
+                        <div
+                            class="text-5xl font-black text-neon-green font-['Space_Grotesk'] tracking-widest mb-6 glow-text">
+                            CODEKRAFTERS</div>
+                        <p class="font-body-lg text-on-surface-variant mb-4">CodeKrafters is a developer community
+                            building the next generation of tech talent through hackathons, workshops, and open-source
+                            projects.</p>
+                        <p class="font-body-md text-on-surface-variant mb-6">Founded in 2023, we've hosted 12+ events
+                            reaching 5,000+ developers across 30 countries. HACKERVERSE is our flagship annual event.
+                        </p>
+                        <div class="flex gap-4">
+                            <a href="#"
+                                class="border border-neon-green text-neon-green px-4 py-2 font-label-mono text-xs hover:bg-neon-green hover:text-black transition-all">WEBSITE</a>
+                            <a href="#"
+                                class="border border-neon-green text-neon-green px-4 py-2 font-label-mono text-xs hover:bg-neon-green hover:text-black transition-all">DISCORD</a>
+                            <a href="#"
+                                class="border border-neon-green text-neon-green px-4 py-2 font-label-mono text-xs hover:bg-neon-green hover:text-black transition-all">GITHUB</a>
+                        </div>
+                    </div>
+                    <div
+                        class="border-2 border-neon-green/30 p-6 bg-black/50 font-['Space_Grotesk'] text-sm reveal stagger-2">
+                        <p class="text-neon-green/50 mb-2">root@codekrafters:~$ cat mission.txt</p>
+                        <p class="text-neon-green mb-1">> Empowering builders worldwide</p>
+                        <p class="text-neon-green mb-1">> 12 hackathons organized</p>
+                        <p class="text-neon-green mb-1">> 5,000+ community members</p>
+                        <p class="text-neon-green mb-1">> 30 countries represented</p>
+                        <p class="text-neon-green mb-1">> 100% open-source advocacy</p>
+                        <p class="text-neon-green/50 mt-3">root@codekrafters:~$ █</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SPONSORS -->
+        <section class="py-24 px-6 bg-[#0D0D0D] border-b-2 border-neon-green/30" id="sponsors">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="font-headline-md text-neon-green mb-4 text-center uppercase tracking-widest reveal">
+                    NETWORK_PARTNERS</h2>
+                <p class="font-label-mono text-on-surface-variant text-center mb-16 reveal stagger-1">POWERING THE
+                    HACKERVERSE ECOSYSTEM</p>
+                <!-- Platinum -->
+                <div class="mb-12">
+                    <p class="font-label-mono text-neon-green text-xs mb-4 tracking-widest reveal">▸ PLATINUM TIER</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div
+                            class="border-2 border-neon-green p-10 bg-background flex items-center justify-center hover:bg-neon-green/5 transition-all card-glow reveal stagger-1">
+                            <span class="font-display-xl text-4xl text-neon-green/60 font-bold">TECH_X</span>
+                        </div>
+                        <div
+                            class="border-2 border-neon-green p-10 bg-background flex items-center justify-center hover:bg-neon-green/5 transition-all card-glow reveal stagger-2">
+                            <span class="font-display-xl text-4xl text-neon-green/60 font-bold">CYBER_AI</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Gold -->
+                <div class="mb-12">
+                    <p class="font-label-mono text-[#FFD700] text-xs mb-4 tracking-widest reveal">▸ GOLD TIER</p>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <div
+                            class="border-2 border-[#FFD700]/40 p-8 bg-background flex items-center justify-center hover:bg-[#FFD700]/5 transition-all reveal stagger-1">
+                            <span class="font-display-xl text-2xl opacity-50">NODE_JS</span>
+                        </div>
+                        <div
+                            class="border-2 border-[#FFD700]/40 p-8 bg-background flex items-center justify-center hover:bg-[#FFD700]/5 transition-all reveal stagger-2">
+                            <span class="font-display-xl text-2xl opacity-50">BLOCK_Q</span>
+                        </div>
+                        <div
+                            class="border-2 border-[#FFD700]/40 p-8 bg-background flex items-center justify-center hover:bg-[#FFD700]/5 transition-all reveal stagger-3">
+                            <span class="font-display-xl text-2xl opacity-50">VIRT_O</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Silver -->
+                <div>
+                    <p class="font-label-mono text-on-surface-variant text-xs mb-4 tracking-widest reveal">▸ SILVER TIER
+                    </p>
+                    <div class="grid grid-cols-3 md:grid-cols-6 gap-3">
+                        <div
+                            class="border border-on-surface-variant/30 p-6 bg-background flex items-center justify-center hover:bg-neon-green/5 transition-all reveal stagger-1">
+                            <span class="font-label-mono text-sm opacity-30">CLOUD_S</span>
+                        </div>
+                        <div
+                            class="border border-on-surface-variant/30 p-6 bg-background flex items-center justify-center hover:bg-neon-green/5 transition-all reveal stagger-2">
+                            <span class="font-label-mono text-sm opacity-30">DEV_HUB</span>
+                        </div>
+                        <div
+                            class="border border-on-surface-variant/30 p-6 bg-background flex items-center justify-center hover:bg-neon-green/5 transition-all reveal stagger-3">
+                            <span class="font-label-mono text-sm opacity-30">API_NET</span>
+                        </div>
+                        <div
+                            class="border border-on-surface-variant/30 p-6 bg-background flex items-center justify-center hover:bg-neon-green/5 transition-all reveal stagger-4">
+                            <span class="font-label-mono text-sm opacity-30">DATA_X</span>
+                        </div>
+                        <div
+                            class="border border-on-surface-variant/30 p-6 bg-background flex items-center justify-center hover:bg-neon-green/5 transition-all reveal stagger-5">
+                            <span class="font-label-mono text-sm opacity-30">FLUX_IO</span>
+                        </div>
+                        <div
+                            class="border border-on-surface-variant/30 p-6 bg-background flex items-center justify-center hover:bg-neon-green/5 transition-all reveal stagger-5">
+                            <span class="font-label-mono text-sm opacity-30">BYTE_CO</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="py-24 px-6 bg-background" id="faq">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="font-headline-lg text-primary mb-16 text-center uppercase reveal">KNOWLEDGE_BASE</h2>
+                <div class="space-y-4">
+                    <div class="faq-item border border-on-surface-variant/30 reveal stagger-1">
+                        <div
+                            class="faq-header flex justify-between items-center p-6 cursor-pointer hover:bg-surface-container-high/50 transition-colors">
+                            <h3 class="font-headline-md text-xl text-primary uppercase">WHO_CAN_PARTICIPATE?</h3>
+                            <span class="material-symbols-outlined text-neon-green faq-icon">add</span>
+                        </div>
+                        <div class="faq-answer px-6">
+                            <p class="font-body-md text-on-surface-variant pb-4">Any developer, designer, or digital
+                                creator globally. You must be over 18 or have parental consent. Solo hackers and teams
+                                of up to 4 are welcome.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item border border-on-surface-variant/30 reveal stagger-2">
+                        <div
+                            class="faq-header flex justify-between items-center p-6 cursor-pointer hover:bg-surface-container-high/50 transition-colors">
+                            <h3 class="font-headline-md text-xl text-primary uppercase">IS_THIS_VIRTUAL?</h3>
+                            <span class="material-symbols-outlined text-neon-green faq-icon">add</span>
+                        </div>
+                        <div class="faq-answer px-6">
+                            <p class="font-body-md text-on-surface-variant pb-4">Yes. This is a global distributed
+                                event. All interactions happen through our secure digital terminal and Discord command
+                                center.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item border border-on-surface-variant/30 reveal stagger-3">
+                        <div
+                            class="faq-header flex justify-between items-center p-6 cursor-pointer hover:bg-surface-container-high/50 transition-colors">
+                            <h3 class="font-headline-md text-xl text-primary uppercase">TEAM_SIZE_LIMITS?</h3>
+                            <span class="material-symbols-outlined text-neon-green faq-icon">add</span>
+                        </div>
+                        <div class="faq-answer px-6">
+                            <p class="font-body-md text-on-surface-variant pb-4">Teams can have 1-4 members. Don't have
+                                a team? Use our matchmaking system during the Kickoff to find your squad.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item border border-on-surface-variant/30 reveal stagger-4">
+                        <div
+                            class="faq-header flex justify-between items-center p-6 cursor-pointer hover:bg-surface-container-high/50 transition-colors">
+                            <h3 class="font-headline-md text-xl text-primary uppercase">INTELLECTUAL_PROPERTY?</h3>
+                            <span class="material-symbols-outlined text-neon-green faq-icon">add</span>
+                        </div>
+                        <div class="faq-answer px-6">
+                            <p class="font-body-md text-on-surface-variant pb-4">You own 100% of the IP you build. We
+                                only request the right to feature your project in our showcase gallery.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item border border-on-surface-variant/30 reveal stagger-5">
+                        <div
+                            class="faq-header flex justify-between items-center p-6 cursor-pointer hover:bg-surface-container-high/50 transition-colors">
+                            <h3 class="font-headline-md text-xl text-primary uppercase">WHAT_TOOLS_ALLOWED?</h3>
+                            <span class="material-symbols-outlined text-neon-green faq-icon">add</span>
+                        </div>
+                        <div class="faq-answer px-6">
+                            <p class="font-body-md text-on-surface-variant pb-4">Any programming language, framework, or
+                                API is allowed. Pre-existing code must be declared. All new code must be written during
+                                the hackathon.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="w-full py-12 px-12 border-t-2 border-neon-green bg-[#0A0A0A] relative z-20">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+                <div>
+                    <div class="text-2xl font-black text-neon-green font-['Space_Grotesk'] mb-3">HACKERVERSE</div>
+                    <p class="font-body-md text-on-surface-variant text-sm">The ultimate 48-hour hackathon experience by
+                        CodeKrafters.</p>
+                </div>
+                <div>
+                    <p class="font-label-mono text-neon-green text-xs mb-4">QUICK_LINKS</p>
+                    <div class="flex flex-col gap-2">
+                        <a href="#about"
+                            class="font-mono text-xs text-on-surface-variant hover:text-neon-green transition-colors">About</a>
+                        <a href="#tracks"
+                            class="font-mono text-xs text-on-surface-variant hover:text-neon-green transition-colors">Tracks</a>
+                        <a href="#prizes"
+                            class="font-mono text-xs text-on-surface-variant hover:text-neon-green transition-colors">Prizes</a>
+                        <a href="#faq"
+                            class="font-mono text-xs text-on-surface-variant hover:text-neon-green transition-colors">FAQ</a>
+                    </div>
+                </div>
+                <div>
+                    <p class="font-label-mono text-neon-green text-xs mb-4">JOIN_THE_NETWORK</p>
+                    <div class="flex gap-2 mb-4">
+                        <input type="email" placeholder="operator@email.com"
+                            class="bg-black border border-neon-green/40 text-neon-green px-4 py-2 font-mono text-xs flex-1 focus:border-neon-green focus:outline-none" />
+                        <button
+                            class="bg-neon-green text-black px-4 py-2 font-label-mono text-xs hover:bg-white transition-all">SEND</button>
+                    </div>
+                    <div class="flex gap-4">
+                        <a href="#"
+                            class="text-neon-green/50 hover:text-neon-green transition-colors font-label-mono text-xs">Discord</a>
+                        <a href="#"
+                            class="text-neon-green/50 hover:text-neon-green transition-colors font-label-mono text-xs">Twitter</a>
+                        <a href="#"
+                            class="text-neon-green/50 hover:text-neon-green transition-colors font-label-mono text-xs">Github</a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-neon-green/20 pt-6 flex flex-wrap justify-between items-center gap-4">
+                <p class="font-mono text-xs tracking-widest uppercase text-neon-green/50">©2026 CODEKRAFTERS //
+                    TERMINAL_ACCESS_GRANTED</p>
+                <div class="flex gap-6">
+                    <a href="#"
+                        class="font-mono text-xs text-neon-green/40 hover:text-white transition-colors">Privacy</a>
+                    <a href="#" class="font-mono text-xs text-neon-green/40 hover:text-white transition-colors">Code of
+                        Conduct</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <button id="back-to-top"
+        class="back-to-top bg-neon-green text-black w-12 h-12 flex items-center justify-center hover:bg-white transition-all">
+        <span class="material-symbols-outlined">arrow_upward</span>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
